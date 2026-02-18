@@ -1,0 +1,14 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: ha-postgres
+spec:
+  enableSuperuserAccess: true
+  switchoverDelay: 30
+  instances: 3
+  storage:
+    size: 1Gi
+  affinity:
+    enablePodAntiAffinity: true   # true is the default → prevents draining more than one replica at a time
+    podAntiAffinityType: required          # Guarantees no two pods on the same node
+    topologyKey: kubernetes.io/hostname
